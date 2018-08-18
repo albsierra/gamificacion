@@ -14,7 +14,9 @@ var conf = {
   hostname: 'localhost',
   port: 3000,
   restApiRoot: '/api', // The path where to mount the REST API app
-  legacyExplorer: false
+  legacyExplorer: false,
+  adminEmail: process.env.ADMIN_EMAIL,
+  adminPassword: process.env.ADMIN_PASSWORD
 };
 
 // The URL where the browser client can access the REST API is available.

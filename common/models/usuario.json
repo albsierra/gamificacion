@@ -52,6 +52,12 @@
       "principalId": "$owner",
       "permission": "ALLOW",
       "property": "__get__grupos"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
     }
   ],
   "methods": {}

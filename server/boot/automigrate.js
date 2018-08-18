@@ -5,7 +5,10 @@ module.exports = function (app) {
       console.log("Modelos creados");
       app.loadFixtures()
         .then(function () {
-          insertaCoordinadores(app);
+          insertaAdmin(app.models, function (err) {
+            if (err) throw err;
+            insertaCoordinadores(app);
+          });
         })
         .catch(function (err) {
           console.log('Errors:', err);
@@ -13,6 +16,31 @@ module.exports = function (app) {
     });
   }
 };
+
+function insertaAdmin(models, cb) {
+  var conf = require('../../global-config');
+  models.Usuario.create(
+    {username: 'Admin', email: conf.adminEmail, password: conf.adminPassword}
+    , function (err, user) {
+      if (err) return cb(err);
+
+      //create the admin role
+      models.Role.create({
+        name: 'admin'
+      }, function (err, role) {
+        if (err) cb(err);
+
+        //make bob an admin
+        role.principals.create({
+          principalType: models.RoleMapping.USER,
+          principalId: user.id
+        }, function (err, principal) {
+          cb(err);
+        });
+      });
+    });
+
+}
 
 function insertaCoordinadores(app) {
   app.models.Juego.find({}, function (err, juegos) {
