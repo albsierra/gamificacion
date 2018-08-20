@@ -93,6 +93,12 @@
       "principalId": "alumno",
       "permission": "ALLOW",
       "property": "__create__grupos"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "coordinadorJuego",
+      "permission": "ALLOW"
     }
   ],
   "methods": {}

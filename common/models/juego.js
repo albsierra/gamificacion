@@ -5,4 +5,8 @@ module.exports = function (Juego) {
     context.args.data.creador = context.req.accessToken.userId;
     next();
   });
+
+  Juego.prototype.juegoAlQuePertenece = function (cb) {
+    return process.nextTick(() => cb(null, this));
+  }
 };

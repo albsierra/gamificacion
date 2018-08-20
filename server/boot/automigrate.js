@@ -7,6 +7,7 @@ module.exports = function (app) {
         .then(function () {
           insertaAdmin(app.models, function (err) {
             if (err) throw err;
+            // TODO eliminar coordinadores en producción
             insertaCoordinadores(app);
           });
         })

@@ -57,6 +57,12 @@
       "principalType": "ROLE",
       "principalId": "admin",
       "permission": "ALLOW"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "coordinadorJuego",
+      "permission": "ALLOW"
     }
   ],
   "methods": {}
