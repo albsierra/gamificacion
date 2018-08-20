@@ -86,6 +86,13 @@
       "principalId": "docente",
       "permission": "ALLOW",
       "property": "create"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "alumno",
+      "permission": "ALLOW",
+      "property": "__create__grupos"
     }
   ],
   "methods": {}

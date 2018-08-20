@@ -21,7 +21,8 @@ function insertaAdmin(models, cb) {
   var conf = require('../../global-config');
   var rolesEstaticos = [
     {name: 'admin'},
-    {name: 'docente'}
+    {name: 'docente'},
+    {name: 'alumno'}
   ];
   
   models.Usuario.create(
