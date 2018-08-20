@@ -70,6 +70,13 @@
       "principalId": "coordinadorJuego",
       "permission": "ALLOW",
       "property": "validate"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "miembroGrupo",
+      "permission": "ALLOW",
+      "property": "invite"
     }
   ],
   "methods": {}
