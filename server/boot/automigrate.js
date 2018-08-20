@@ -19,19 +19,22 @@ module.exports = function (app) {
 
 function insertaAdmin(models, cb) {
   var conf = require('../../global-config');
+  var rolesEstaticos = [
+    {name: 'admin'},
+    {name: 'docente'}
+  ];
+  
   models.Usuario.create(
     {username: 'Admin', email: conf.adminEmail, password: conf.adminPassword}
     , function (err, user) {
       if (err) return cb(err);
 
       //create the admin role
-      models.Role.create({
-        name: 'admin'
-      }, function (err, role) {
+      models.Role.create(rolesEstaticos, function (err, roles) {
         if (err) cb(err);
 
-        //make bob an admin
-        role.principals.create({
+        //make Admin an admin
+        roles[0].principals.create({
           principalType: models.RoleMapping.USER,
           principalId: user.id
         }, function (err, principal) {
