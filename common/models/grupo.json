@@ -9,6 +9,10 @@
     "nombre": {
       "type": "string",
       "required": true
+    },
+    "validado": {
+      "type": "boolean",
+      "default": false
     }
   },
   "validations": [],
@@ -79,5 +83,24 @@
       "property": "invite"
     }
   ],
-  "methods": {}
+  "methods": {
+    "prototype.validate": {
+      "accepts": [],
+      "returns": [
+        {
+          "arg": "grupo",
+          "type": "object",
+          "root": false,
+          "description": "Los datos del grupo, con el atributo validado puesto a true"
+        }
+      ],
+      "description": "Valida un grupo por cumplir con las normas establecidas.",
+      "http": [
+        {
+          "path": "/validate",
+          "verb": "put"
+        }
+      ]
+    }
+  }
 }

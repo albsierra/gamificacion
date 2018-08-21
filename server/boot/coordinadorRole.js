@@ -3,7 +3,7 @@ module.exports = function (app) {
 
   Role.registerResolver('coordinadorJuego', function (role, context, cb) {
     // Q: Is the current request accessing a: Juego, Prueba or Marcador?
-    if (['Juego', 'Prueba', 'Marcador'].indexOf(context.modelName) < 0) {
+    if (['Juego', 'Prueba', 'Marcador', 'Grupo'].indexOf(context.modelName) < 0) {
       // A: No. This role is only for ['juego', 'prueba', 'marcador']: callback with FALSE
       return process.nextTick(() => cb(null, false));
     }
