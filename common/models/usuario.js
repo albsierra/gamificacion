@@ -59,4 +59,79 @@ module.exports = function (Usuario) {
     });
   });
 
+  /**
+   * Permite enviar emails de invitación a otros usuarios.
+   * @param {array} emails Un array conteniendo las direcciones de correo electrónico de los usuarios a invitar
+   * @param {object} req el objeto con la petición
+   * @param {Function(Error, array)} callback
+   */
+
+  Usuario.invite = function (emails, req, callback) {
+//TODO permitir la recepción de un String con los emails separados por comas.
+    var emailsValidos = validaEmails(emails);
+
+    var invitados = compruebaDominios(emailsValidos);
+
+    let accessContext = {
+      principalType: 'USER',
+      principalId: req.accessToken.userId
+    };
+
+    var Role = Usuario.app.models.Role;
+    Role.getRoles(accessContext).then(rolesMapping => {
+      rolesMapping = rolesMapping.filter(roleMapping => Number.isInteger(roleMapping));
+      Role.find({where: {id: rolesMapping}}).then(roles => {
+        var rolEncontrado = roles.find(function (rol) {
+          return rol.name === 'docente' || rol.name === 'admin';
+        });
+        if (!rolEncontrado) invitados = invitados.slice(0, 10);
+
+        //TODO Evitar la duplicidad de código enviando emails desde Usuario
+        //TODO Utilizar una plantilla EJS para componer un mejor cuerpo del email
+        //TODO Incluir el nombre y el apellido del que envía la invitación
+        var url = 'http://' + config.host + ':' + config.port;
+        var html = 'Click <a href="' + url + '">aqu&iacute;</a> para unirte a nuestra aplicación de gamificación';
+
+        Usuario.app.models.Email.send({
+          bcc: invitados,
+          from: senderAddress,
+          subject: 'Te han invitado a participar en la app de gamificación del I.E.S. Dos Mares',
+          html: html
+        }, function (err) {
+          if (err) return callback(new Error('> error enviando el email para resetear la contrase&ntilde;a'));
+
+          return callback(null, invitados);
+        });
+      }).catch(reject => {
+        return callback(reject)
+      })
+    }).catch(reject => {
+      return callback(reject)
+    })
+
+  };
+
+};
+
+var validaEmails = function (emails) {
+  var isEmail = require('isemail');
+  let emailsValidados = [];
+  emails.forEach(function (email) {
+    if (isEmail.validate(email)) {
+      emailsValidados.push(email);
+    }
+  });
+  return emailsValidados;
+};
+
+var compruebaDominios = function (emails) {
+  //TODO incluir el array tldWhitelist en el fichero global-config.js
+  let tldWhitelist = ['murciaeduca.es', 'alu.murciaeduca.es'];
+  var emailsValidados = [];
+  emails.forEach((email) => {
+    if (tldWhitelist.indexOf(email.substring(email.indexOf("@") + 1, email.length)) >= 0) {
+      emailsValidados.push(email);
+    }
+  });
+  return emailsValidados
 };

@@ -67,5 +67,43 @@
       "property": "invite"
     }
   ],
-  "methods": {}
+  "methods": {
+    "invite": {
+      "accepts": [
+        {
+          "arg": "emails",
+          "type": "array",
+          "required": true,
+          "description": "Un array conteniendo las direcciones de correo electrónico de los usuarios a invitar",
+          "http": {
+            "source": "form"
+          }
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "El objeto con la petición, para obtener el accessToken",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "invitados",
+          "type": "array",
+          "root": false,
+          "description": "Los emails realmente enviados"
+        }
+      ],
+      "description": "Permite enviar emails de invitación a otros usuarios.",
+      "http": [
+        {
+          "path": "/invite",
+          "verb": "post"
+        }
+      ]
+    }
+  }
 }
