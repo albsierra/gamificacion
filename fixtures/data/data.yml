@@ -1,4 +1,8 @@
 Usuario:
+  usuarioDocente:
+    email: "profe@ies2mares.ies"
+    password: "alumno"
+    emailVerified: "true"
   usuario{1..10}:
     email: "usuario{@}@ies2mares.ies"
     password: "alumno"
@@ -40,3 +44,15 @@ Miembro:
 Imagen:
   imagen{1..20}:
     url: "imagen.jpg"
+
+Role:
+  roleDocente:
+    name: "docente"
+  roleAlumno:
+    name: "alumno"
+
+RoleMapping:
+  rmDocente:
+    principalType: "USER"
+    principalId: @usuarioDocente
+    roleId: @roleDocente
