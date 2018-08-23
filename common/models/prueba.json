@@ -37,6 +37,11 @@
         "foreignKey": "imageableId",
         "discriminator": "imageableType"
       }
+    },
+    "puntuaciones": {
+      "type": "hasMany",
+      "model": "Marcador",
+      "foreignKey": ""
     }
   },
   "acls": [
@@ -63,7 +68,33 @@
       "principalType": "ROLE",
       "principalId": "coordinadorJuego",
       "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "ranking"
     }
   ],
-  "methods": {}
+  "methods": {
+    "prototype.ranking": {
+      "accepts": [],
+      "returns": [
+        {
+          "arg": "puntosEquipos",
+          "type": "array",
+          "root": false,
+          "description": "Una array conteniendo el nombre y puntuación de los equipos en la prueba consultada."
+        }
+      ],
+      "description": "Puntuaciones de los equipos en una prueba determinada",
+      "http": [
+        {
+          "path": "/ranking",
+          "verb": "get"
+        }
+      ]
+    }
+  }
 }
