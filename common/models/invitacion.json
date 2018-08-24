@@ -1,0 +1,29 @@
+{
+  "name": "Invitacion",
+  "plural": "Invitaciones",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "email": {
+      "type": "string",
+      "required": true
+    },
+    "token": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "grupo": {
+      "type": "belongsTo",
+      "model": "Grupo",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

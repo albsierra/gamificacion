@@ -47,6 +47,11 @@
         "foreignKey": "imageableId",
         "discriminator": "imageableType"
       }
+    },
+    "invitaciones": {
+      "type": "hasMany",
+      "model": "Invitacion",
+      "foreignKey": ""
     }
   },
   "acls": [
@@ -99,6 +104,43 @@
         {
           "path": "/validate",
           "verb": "put"
+        }
+      ]
+    },
+    "prototype.invite": {
+      "accepts": [
+        {
+          "arg": "emails",
+          "type": "array",
+          "required": true,
+          "description": "Un array conteniendo las direcciones de correo electrónico de los usuarios a invitar",
+          "http": {
+            "source": "form"
+          }
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "El objeto con la petición, para obtener el accessToken",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "invitados",
+          "type": "array",
+          "root": false,
+          "description": "El objeto con la petición, para obtener el accessToken"
+        }
+      ],
+      "description": "Permite enviar emails de invitación a otros usuarios para participar en uno de los grupos de los que el usuario es miembro.",
+      "http": [
+        {
+          "path": "/invite",
+          "verb": "post"
         }
       ]
     }

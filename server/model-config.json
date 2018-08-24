@@ -95,5 +95,9 @@
   },
   "Email": {
     "dataSource": "Email"
+  },
+  "Invitacion": {
+    "dataSource": "db",
+    "public": false
   }
 }
