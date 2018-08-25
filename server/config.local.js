@@ -15,5 +15,6 @@ module.exports = {
   restApiRoot: GLOBAL_CONFIG.restApiRoot,
   isDevEnv: isDevEnv,
   port: GLOBAL_CONFIG.port,
-  legacyExplorer: GLOBAL_CONFIG.legacyExplorer
+  legacyExplorer: GLOBAL_CONFIG.legacyExplorer,
+  cookieSecret: GLOBAL_CONFIG.cookieSecret
 };

@@ -3,6 +3,7 @@
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 var path = require('path');
+var cookieParser = require('cookie-parser');
 var session = require('express-session');
 
 var app = module.exports = loopback();
@@ -14,8 +15,6 @@ var passportConfigurator = new PassportConfigurator(app);
 // configure view handler
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
-app.use(loopback.token());
 
 app.start = function () {
   // start the web server
@@ -42,7 +41,7 @@ boot(app, __dirname, function (err) {
 
 // Enable http session
 //TODO pasar secret a global-config.js
-app.use(session({secret: 'keyboard cat'}));
+//app.use(session({secret: 'keyboard cat'}));
 
 // Load the provider configurations
 var config = {};
@@ -53,6 +52,14 @@ try {
   console.error('Copy `providers.json.template` to `providers.json` and replace the clientID/clientSecret values with your own.');
   process.exit(1);
 }
+var secret = app.get('cookieSecret');
+app.middleware('session:before', cookieParser(secret));
+app.middleware('session', session({
+  secret: secret,
+  saveUninitialized: true,
+  resave: true,
+}));
+
 // Initialize passport
 passportConfigurator.init();
 

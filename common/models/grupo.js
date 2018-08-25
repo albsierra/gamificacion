@@ -103,6 +103,27 @@ module.exports = function (Grupo) {
     });
   };
 
+  /**
+   * Un usuario de la app acepta participar en un grupo al que ha sido previamente invitado.
+   * @param {string} token El token enviado junto con la invitación
+   * @param {object} req El objeto con
+   * @param {Function(Error, object)} callback
+   */
+
+  Grupo.prototype.aceptarInvitacion = function (token, req, callback) {
+    var grupo = this;
+
+    grupo.invitaciones.findOne({
+      token: token
+    }).then(invitacion => {
+      if (!invitacion) callback(new Error("El token enviado no corresponde a ninguna invitación para este grupo"));
+
+      grupo.miembros.add(req.accessToken.userId)
+        .then(miembro => callback(null, miembro))
+        .catch(err => callback(err))
+    }).catch(err => callback(err));
+  };
+
   Grupo.prototype.juegoAlQuePertenece = function (cb) {
     this.juego(function (err, juego) {
       if (err) cb(err);

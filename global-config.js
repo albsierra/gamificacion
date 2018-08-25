@@ -16,7 +16,8 @@ var conf = {
   restApiRoot: '/api', // The path where to mount the REST API app
   legacyExplorer: false,
   adminEmail: process.env.ADMIN_EMAIL,
-  adminPassword: process.env.ADMIN_PASSWORD
+  adminPassword: process.env.ADMIN_PASSWORD,
+  cookieSecret: process.env.COOKIE_SECRET
 };
 
 // The URL where the browser client can access the REST API is available.
