@@ -61,6 +61,12 @@ module.exports = function (Juego) {
           cb(err)
         });
     });
-  }
+  };
+
+  Juego.afterRemote('create', function (context, juego, next) {
+    juego.coordinadores.add(context.req.accessToken.userId)
+      .then(coordinador => next())
+      .catch(error => next(error));
+  });
 
 };

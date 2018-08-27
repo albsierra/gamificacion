@@ -10,7 +10,7 @@ module.exports = function (app) {
 
     //Q: Is the user logged in? (there will be an accessToken with an ID if so)
     var userId = context.accessToken.userId;
-    if (!userId) {
+    if (!userId || !context.modelId) {
       //A: No, user is NOT logged in: callback with FALSE
       return process.nextTick(() => cb(null, false));
     }
