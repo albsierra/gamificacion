@@ -23,7 +23,7 @@ function insertaAdmin(models, cb) {
   var roleAdmin = {name: 'admin'};
   
   models.Usuario.create(
-    {username: 'Admin', email: conf.adminEmail, password: conf.adminPassword}
+    {username: 'Admin', email: conf.adminEmail, password: conf.adminPassword, emailVerified: true}
     , function (err, user) {
       if (err) return cb(err);
 

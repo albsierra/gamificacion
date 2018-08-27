@@ -27,6 +27,21 @@ module.exports = {
     }).catch(reject => {
       return cb(reject)
     })
+  },
+
+  soloValidados: function (filter) {
+    if (!filter)
+      filter = {};
+    if ((!filter.where))
+      filter.where = {};
+
+    filter.where = {
+      and: [
+        {validado: true},
+        filter.where
+      ]
+    };
+    return filter;
   }
 
 };

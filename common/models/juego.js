@@ -1,10 +1,45 @@
 'use strict';
 
+var gamificaFunctions = require('../../server/lib/gamificaFunctions');
+
 module.exports = function (Juego) {
   Juego.beforeRemote('create', function (context, juego, next) {
     context.args.data.creador = context.req.accessToken.userId;
     next();
   });
+
+  Juego.beforeRemote('prototype.__get__grupos', function (context, juego, next) {
+
+    var Role = Juego.app.models.Role;
+    var filter = context.args.filter;
+    var rolesArray = [];
+
+    if (context.req.accessToken && context.req.accessToken.userId) {
+      let ctx = {
+        accessToken: context.req.accessToken,
+        model: Juego,
+        modelId: context.instance.id,
+        modelName: "Juego"
+      };
+      rolesArray.push(Role.isInRole("coordinadorJuego", ctx));
+      rolesArray.push(Role.isInRole("admin", ctx));
+      Promise.all(rolesArray).then(roles => {
+        let isInRole = roles.find(function (role) {
+          return role === true;
+        });
+        if (!isInRole) {
+          context.args.filter = gamificaFunctions.soloValidados(filter);
+        }
+        next();
+      }).catch(err => next(err));
+    } else {
+      context.args.filter = gamificaFunctions.soloValidados(filter);
+      process.nextTick(() => next());
+    }
+
+  });
+
+
 
   Juego.prototype.juegoAlQuePertenece = function (cb) {
     return process.nextTick(() => cb(null, this));
