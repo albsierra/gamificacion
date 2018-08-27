@@ -87,7 +87,8 @@ module.exports = function (Grupo) {
         //TODO Evitar la duplicidad de código enviando emails desde Usuario
         //TODO Utilizar una plantilla EJS para componer un mejor cuerpo del email
         //TODO Incluir el nombre y el apellido del que envía la invitación
-        var url = 'http://' + config.host + ':' + config.port + '/Grupos/' + grupo.id + '/aceptarInvitacion?token=' + token;
+
+        var url = 'http://' + config.host + ':' + config.port + '/' + config.restApiRoot + '/Grupos/' + grupo.id + '/aceptarInvitacion?token=' + token;
         var html = 'Click <a href="' + url + '">aqu&iacute;</a> para aceptar la invitación al grupo ' + grupo.nombre;
 
         Grupo.app.models.Email.send({
