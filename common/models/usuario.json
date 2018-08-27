@@ -22,13 +22,7 @@
       "type": "hasMany",
       "model": "Grupo",
       "foreignKey": "",
-      "through": "Miembro",
-      "scope": {
-        "where": {
-          "validado": true
-        },
-        "include": "grupo"
-      }
+      "through": "Miembro"
     },
     "avatar": {
       "type": "hasOne",
