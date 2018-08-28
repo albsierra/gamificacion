@@ -38,8 +38,6 @@ Miembro:
     usuarioId: @usuario.*
     grupoId: @grupo.*
     puntos: "(function() { return (Math.floor(Math.random()*10)+1) * 100; })()"
-    token: "{{random.uuid}}"
-    validado: "{{random.boolean}}"
 
 Imagen:
   imagen{1..20}:

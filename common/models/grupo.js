@@ -114,7 +114,7 @@ module.exports = function (Grupo) {
     var grupo = this;
 
     grupo.invitaciones.findOne({
-      token: token
+      where: {token: token}
     }).then(invitacion => {
       if (!invitacion) callback(new Error("El token enviado no corresponde a ninguna invitación para este grupo"));
 
@@ -123,6 +123,21 @@ module.exports = function (Grupo) {
         .catch(err => callback(err))
     }).catch(err => callback(err));
   };
+
+  Grupo.afterRemote('prototype.aceptarInvitacion', function (context, miembro, next) {
+    var grupo = context.instance;
+    var token = context.req.query.token;
+
+    grupo.invitaciones.findOne({
+      where: {token: token}
+    }).then(invitacion => {
+      if (!invitacion) callback(new Error("El token enviado no corresponde a ninguna invitación para este grupo"));
+
+      invitacion.destroy()
+        .then(() => next())
+        .catch(err => callback(err))
+    }).catch(err => callback(err));
+  });
 
   Grupo.prototype.juegoAlQuePertenece = function (cb) {
     this.juego(function (err, juego) {
