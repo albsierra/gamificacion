@@ -83,7 +83,7 @@
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
-      "principalId": "alumno",
+      "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": "__create__grupos"
     },

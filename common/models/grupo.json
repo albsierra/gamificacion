@@ -104,7 +104,7 @@
       "http": [
         {
           "path": "/validate",
-          "verb": "put"
+          "verb": "get"
         }
       ]
     },

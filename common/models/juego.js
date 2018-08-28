@@ -1,6 +1,9 @@
 'use strict';
 
+var config = require('../../server/config.json');
 var gamificaFunctions = require('../../server/lib/gamificaFunctions');
+//TODO unificar todos los senderAddress en el global-config.js
+var senderAddress = "noreply@iesdosmares.com"; //Replace this address with your actual address
 
 module.exports = function (Juego) {
   Juego.beforeRemote('create', function (context, juego, next) {
@@ -102,6 +105,39 @@ module.exports = function (Juego) {
     juego.coordinadores.add(context.req.accessToken.userId)
       .then(coordinador => next())
       .catch(error => next(error));
+  });
+
+  Juego.afterRemote('prototype.__create__grupos', function (context, grupo, next) {
+    var juego = context.instance;
+    juego.coordinadores((err, coordinadores) => {
+      if (err) next(err);
+      //TODO el email real de los usuarios está en UserIdentity
+      var emailCoordinadores = coordinadores.map(coordinador => {
+        return coordinador.email
+      });
+
+      var subject = 'Un grupo se ha inscrito en el juego ' + juego.nombre;
+
+      let url = 'http://' + config.host + ':' + config.port + '/' + config.restApiRoot + '/Grupos/' + grupo.id + '/';
+      var urlValidar = url + 'validate';
+      var urlRechazar = url + 'reject';
+      var html = '<p>Se ha inscrito el grupo <b>' + grupo.nombre + '</b></p>';
+      html += '</p>Click <a href="' + urlValidar + '">aqu&iacute;</a> para <b>aceptar</b> al grupo.</p>';
+      html += '</p>Click <a href="' + urlRechazar + '">aqu&iacute;</a> para <b>rechazar</b> al grupo.</p>';
+
+      //TODO Utilizar una plantilla EJS para componer un mejor cuerpo del email
+      Juego.app.models.Email.send({
+        to: emailCoordinadores,
+        from: senderAddress,
+        subject: subject,
+        html: html
+      }, err => {
+        if (err) reject(err);
+        next();
+      })
+
+    });
+
   });
 
 };
