@@ -121,6 +121,18 @@ module.exports = function (Juego) {
   Juego.afterRemote('prototype.__create__grupos',
     function (context, grupo, next) {
       var juego = context.instance;
+      var userId = context.req.accessToken && context.req.accessToken.userId;
+
+      grupo.miembros.add(userId, (err, miembro) => {
+        if (err) next(err);
+        next();
+      });
+    }
+  );
+
+  Juego.afterRemote('prototype.__create__grupos',
+    function (context, grupo, next) {
+      var juego = context.instance;
       juego.coordinadores((err, coordinadores) => {
         if (err) next(err);
         // TODO el email real de los usuarios está en UserIdentity
