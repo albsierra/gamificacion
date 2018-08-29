@@ -23,6 +23,21 @@ module.exports = function (Grupo) {
   };
 
   /**
+   * Valida un grupo por cumplir con las normas establecidas.
+   * @param {Function(Error, string)} callback
+   */
+
+  Grupo.prototype.reject = function (callback) {
+    var grupo = this;
+    grupo.destroy().then(function () {
+      callback(null, 'Grupo eliminado correctamente');
+    })
+      .catch(function (err) {
+        callback(err);
+      });
+  };
+
+  /**
    * Permite enviar emails de invitación a otros usuarios para participar en uno de los grupos de los que el usuario es miembro.
    * @param {array} emails Un array conteniendo las direcciones de correo electrónico de los usuarios a invitar
    * @param {object} req El objeto con la petición, para obtener el accessToken
@@ -147,6 +162,30 @@ module.exports = function (Grupo) {
           .then(() => next())
           .catch(err => next(err));
       }).catch(err => next(err));
+    }
+  );
+
+  Grupo.beforeRemote('prototype.reject',
+    function (context, msg, next) {
+      var grupo = context.instance;
+      Grupo.findById(grupo.id)
+        .then(grupo => {
+          grupo.miembros((err, miembros) => {
+            if (err) next(err);
+
+            let borrarPromise = [];
+            miembros.forEach(miembro => {
+              borrarPromise.push(grupo.miembros.remove(miembro));
+            });
+            Promise.all(borrarPromise)
+              .then(miembrosBorrados => {
+                next();
+              })
+              .catch(err => next(err));
+          });
+        })
+        .catch(err => next(err));
+
     }
   );
 

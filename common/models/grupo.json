@@ -87,6 +87,13 @@
       "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": "aceptarInvitacion"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "coordinadorJuego",
+      "permission": "ALLOW",
+      "property": "reject"
     }
   ],
   "methods": {
@@ -104,6 +111,24 @@
       "http": [
         {
           "path": "/validate",
+          "verb": "get"
+        }
+      ]
+    },
+    "prototype.reject": {
+      "accepts": [],
+      "returns": [
+        {
+          "arg": "msg",
+          "type": "string",
+          "root": false,
+          "description": "Un mensaje indicando la eliminación del grupo"
+        }
+      ],
+      "description": "Rechaza un grupo por no cumplir con las normas establecidas.",
+      "http": [
+        {
+          "path": "/reject",
           "verb": "get"
         }
       ]
