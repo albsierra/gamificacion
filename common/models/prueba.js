@@ -1,11 +1,10 @@
 'use strict';
 
 module.exports = function (Prueba) {
-
   Prueba.prototype.juegoAlQuePertenece = function (cb) {
     this.juego(function (err, juego) {
       if (err) cb(err);
-      if (!juego) cb(new Error("No existe un juego asociado a esta prueba"));
+      if (!juego) cb(new Error('No existe un juego asociado a esta prueba'));
 
       cb(null, juego);
     });
@@ -21,7 +20,7 @@ module.exports = function (Prueba) {
 
     prueba.puntuaciones({
       order: 'puntos DESC',
-      include: 'grupo'
+      include: 'grupo',
     }, function (err, grupos) {
       if (err) callback(err);
       let puntosEquipos = [];
@@ -31,13 +30,11 @@ module.exports = function (Prueba) {
         let puntosEquipo = {
           id: grupoParticipante.grupo.id,
           nombre: grupoParticipante.grupo.nombre,
-          puntos: grupoParticipante.puntos
+          puntos: grupoParticipante.puntos,
         };
         puntosEquipos.push(puntosEquipo);
       });
       callback(null, puntosEquipos);
     });
   };
-
-
 };

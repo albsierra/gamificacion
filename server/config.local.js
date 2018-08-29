@@ -16,5 +16,5 @@ module.exports = {
   isDevEnv: isDevEnv,
   port: GLOBAL_CONFIG.port,
   legacyExplorer: GLOBAL_CONFIG.legacyExplorer,
-  cookieSecret: GLOBAL_CONFIG.cookieSecret
+  cookieSecret: GLOBAL_CONFIG.cookieSecret,
 };

@@ -9,12 +9,14 @@ module.exports = {
 
     let accessContext = {
       principalType: 'USER',
-      principalId: req.accessToken.userId
+      principalId: req.accessToken.userId,
     };
 
     var Role = app.models.Role;
     Role.getRoles(accessContext).then(rolesMapping => {
-      rolesMapping = rolesMapping.filter(roleMapping => Number.isInteger(roleMapping));
+      rolesMapping = rolesMapping.filter(
+        roleMapping => Number.isInteger(roleMapping)
+      );
       return Role.find({where: {id: rolesMapping}}).then(roles => {
         var rolEncontrado = roles.find(function (rol) {
           return rol.name === 'docente' || rol.name === 'admin';
@@ -22,11 +24,11 @@ module.exports = {
         if (!rolEncontrado) invitados = invitados.slice(0, 10);
         return cb(null, invitados);
       }).catch(reject => {
-        return cb(reject)
-      })
+        return cb(reject);
+      });
     }).catch(reject => {
-      return cb(reject)
-    })
+      return cb(reject);
+    });
   },
 
   soloValidados: function (filter) {
@@ -38,11 +40,11 @@ module.exports = {
     filter.where = {
       and: [
         {validado: true},
-        filter.where
-      ]
+        filter.where,
+      ],
     };
     return filter;
-  }
+  },
 
 };
 
@@ -58,13 +60,15 @@ var validaEmails = function (emails) {
 };
 
 var compruebaDominios = function (emails) {
-  //TODO incluir el array tldWhitelist en el fichero global-config.js
+  // TODO incluir el array tldWhitelist en el fichero global-config.js
   let tldWhitelist = ['murciaeduca.es', 'alu.murciaeduca.es'];
   var emailsValidados = [];
   emails.forEach((email) => {
-    if (tldWhitelist.indexOf(email.substring(email.indexOf("@") + 1, email.length)) >= 0) {
+    if (tldWhitelist.indexOf(
+      email.substring(email.indexOf('@') + 1, email.length)) >= 0
+    ) {
       emailsValidados.push(email);
     }
   });
-  return emailsValidados
+  return emailsValidados;
 };

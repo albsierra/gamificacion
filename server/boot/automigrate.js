@@ -1,8 +1,10 @@
+'use strict';
+
 module.exports = function (app) {
-  if (process.env.AUTOMIGRATE === "true") {
+  if (process.env.AUTOMIGRATE === 'true') {
     app.dataSources.db.automigrate(null, function (err) {
       if (err) throw err;
-      console.log("Modelos creados");
+      console.log('Modelos creados');
       app.loadFixtures()
         .then(function () {
           insertaAdmin(app.models, function (err) {
@@ -21,26 +23,31 @@ module.exports = function (app) {
 function insertaAdmin(models, cb) {
   var conf = require('../../global-config');
   var roleAdmin = {name: 'admin'};
-  
+  let usuario = {
+    username: 'Admin',
+    email: conf.adminEmail,
+    password: conf.adminPassword,
+    emailVerified: true,
+  };
+
   models.Usuario.create(
-    {username: 'Admin', email: conf.adminEmail, password: conf.adminPassword, emailVerified: true}
+    usuario
     , function (err, user) {
       if (err) return cb(err);
 
-      //create the admin role
+      // create the admin role
       models.Role.create(roleAdmin, function (err, rol) {
         if (err) cb(err);
 
-        //make Admin an admin
+        // make Admin an admin
         rol.principals.create({
           principalType: models.RoleMapping.USER,
-          principalId: user.id
+          principalId: user.id,
         }, function (err, principal) {
           cb(err);
         });
       });
     });
-
 }
 
 function insertaCoordinadores(app) {
@@ -53,7 +60,7 @@ function insertaCoordinadores(app) {
       });
     });
 
-    Promise.all(coordinadores).then(() => console.log('Datos cargados correctamente!'));
-  })
-
+    Promise.all(coordinadores)
+      .then(() => console.log('Datos cargados correctamente!'));
+  });
 }

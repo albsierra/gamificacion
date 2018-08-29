@@ -40,16 +40,19 @@ boot(app, __dirname, function (err) {
 });
 
 // Enable http session
-//TODO pasar secret a global-config.js
-//app.use(session({secret: 'keyboard cat'}));
+// TODO pasar secret a global-config.js
+// app.use(session({secret: 'keyboard cat'}));
 
 // Load the provider configurations
 var config = {};
 try {
   config = require('../global-config.js');
 } catch (err) {
-  console.error('Please configure your passport strategy in `providers.json`.');
-  console.error('Copy `providers.json.template` to `providers.json` and replace the clientID/clientSecret values with your own.');
+  console.error(
+    'Please configure your passport strategy in `providers.json`.'
+  );
+  console.error('Copy `providers.json.template` to `providers.json` and ' +
+    'replace the clientID/clientSecret values with your own.');
   process.exit(1);
 }
 var secret = app.get('cookieSecret');
@@ -67,7 +70,7 @@ passportConfigurator.init();
 passportConfigurator.setupModels({
   userModel: app.models.Usuario,
   userIdentityModel: app.models.UserIdentity,
-  userCredentialModel: app.models.UserCredential
+  userCredentialModel: app.models.UserCredential,
 });
 // Configure passport strategies for third party auth providers
 for (var s in config.providers) {

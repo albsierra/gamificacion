@@ -9,13 +9,13 @@ module.exports = function (server) {
     res.render('verified');
   });
 
-  //show password reset form
-  //TODO incluir la versión en la url de redirectUrl
+  // show password reset form
+  // TODO incluir la versión en la url de redirectUrl
   router.get('/reset-password', function (req, res, next) {
     if (!req.accessToken) return res.sendStatus(401);
     res.render('password-reset', {
       redirectUrl: '/api/Usuarios/reset-password?access_token=' +
-        req.accessToken.id
+        req.accessToken.id,
     });
   });
 
