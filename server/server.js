@@ -69,7 +69,7 @@ passportConfigurator.init();
 // Set up related models
 passportConfigurator.setupModels({
   userModel: app.models.Usuario,
-  userIdentityModel: app.models.UserIdentity,
+  userIdentityModel: app.models.UsuarioIdentity,
   userCredentialModel: app.models.UserCredential,
 });
 // Configure passport strategies for third party auth providers
