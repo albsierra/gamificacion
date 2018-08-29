@@ -42,6 +42,14 @@ module.exports = function (Juego) {
     }
   );
 
+  Juego.beforeRemote('prototype.__create__grupos',
+    function (context, grupo, next) {
+      if (context.args.data && context.args.data.validado)
+        delete context.args.data.validado;
+      next();
+    }
+  );
+
   Juego.prototype.juegoAlQuePertenece = function (cb) {
     return process.nextTick(() => cb(null, this));
   };
