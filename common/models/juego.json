@@ -46,6 +46,14 @@
         "foreignKey": "imageableId",
         "discriminator": "imageableType"
       }
+    },
+    "invitaciones": {
+      "type": "hasMany",
+      "model": "Invitacion",
+      "polymorphic": {
+        "foreignKey": "invitableId",
+        "discriminator": "invitableType"
+      }
     }
   },
   "acls": [
@@ -99,6 +107,13 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "ranking"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "coordinadorJuego",
+      "permission": "ALLOW",
+      "property": "invite"
     }
   ],
   "methods": {
@@ -117,6 +132,43 @@
         {
           "path": "/ranking",
           "verb": "get"
+        }
+      ]
+    },
+    "prototype.invite": {
+      "accepts": [
+        {
+          "arg": "emails",
+          "type": "array",
+          "required": true,
+          "description": "Un array conteniendo las direcciones de correo electrónico de los usuarios a invitar",
+          "http": {
+            "source": "form"
+          }
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "El objeto con la petición, para obtener el accessToken",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "invitados",
+          "type": "array",
+          "root": false,
+          "description": "El objeto con la petición, para obtener el accessToken"
+        }
+      ],
+      "description": "Permite enviar emails de invitación a otros usuarios para participar en uno de los juegos de los que el usuario es coordinador.",
+      "http": [
+        {
+          "path": "/invite",
+          "verb": "post"
         }
       ]
     }

@@ -18,12 +18,57 @@
   },
   "validations": [],
   "relations": {
-    "grupo": {
+    "invitable": {
       "type": "belongsTo",
-      "model": "Grupo",
-      "foreignKey": ""
+      "polymorphic": true
     }
   },
-  "acls": [],
-  "methods": {}
+  "acls": [
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "aceptarInvitacion"
+    }
+  ],
+  "methods": {
+    "prototype.aceptarInvitacion": {
+      "accepts": [
+        {
+          "arg": "token",
+          "type": "string",
+          "required": true,
+          "description": "El token enviado junto con la invitación",
+          "http": {
+            "source": "query"
+          }
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "El objeto con la petición",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "miembro",
+          "type": "object",
+          "root": false,
+          "description": "El objeto miembro creado con la invitacion"
+        }
+      ],
+      "description": "Un usuario de la app acepta participar en un grupo o juego al que ha sido previamente invitado.",
+      "http": [
+        {
+          "path": "/aceptarInvitacion",
+          "verb": "get"
+        }
+      ]
+    }
+  }
 }

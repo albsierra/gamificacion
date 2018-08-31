@@ -13,6 +13,7 @@ var isDevEnv = env === 'development' || env === 'test';
 module.exports = {
   hostname: GLOBAL_CONFIG.hostname,
   restApiRoot: GLOBAL_CONFIG.restApiRoot,
+  restApiUrl: GLOBAL_CONFIG.restApiUrl,
   isDevEnv: isDevEnv,
   port: GLOBAL_CONFIG.port,
   legacyExplorer: GLOBAL_CONFIG.legacyExplorer,

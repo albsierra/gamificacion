@@ -1,6 +1,5 @@
 'use strict';
 
-var config = require('../../server/config.json');
 var gamificaFunctions = require('../../server/lib/gamificaFunctions');
 // TODO unificar todos los senderAddress en el global-config.js
 var senderAddress = 'noreply@iesdosmares.com'; // Replace this address with your actual address
@@ -112,6 +111,23 @@ module.exports = function (Juego) {
     });
   };
 
+  /**
+   * Permite enviar emails de invitación a otros usuarios para participar en uno de los juegos de los que el usuario es coordinador.
+   * @param {array} emails Un array conteniendo las direcciones de correo electrónico de los usuarios a invitar
+   * @param {object} req El objeto con la petición, para obtener el accessToken
+   * @param {Function(Error, array)} callback
+   */
+
+  Juego.prototype.invite = function (emails, req, callback) {
+// TODO permitir la recepción de un String con los emails separados por comas.
+
+    var Invitacion = Juego.app.models.Invitacion;
+
+    Invitacion.invite(emails, req, this, (err, emails) => {
+      return callback(err, emails)
+    });
+  };
+
   Juego.afterRemote('create', function (context, juego, next) {
     juego.coordinadores.add(context.req.accessToken.userId)
       .then(coordinador => next())
@@ -142,8 +158,7 @@ module.exports = function (Juego) {
 
         var subject = 'Un grupo se ha inscrito en el juego ' + juego.nombre;
 
-        let url = 'http://' + config.host + ':' + config.port + '/' +
-          config.restApiRoot + '/Grupos/' + grupo.id + '/';
+        let url = Invitacion.app.get('restApiUrl') + '/Grupos/' + grupo.id + '/';
         var urlValidar = url + 'validate';
         var urlRechazar = url + 'reject';
         var html = '<p>Se ha inscrito el grupo <b>' + grupo.nombre + '</b>' +

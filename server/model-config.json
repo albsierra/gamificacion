@@ -98,7 +98,7 @@
   },
   "Invitacion": {
     "dataSource": "db",
-    "public": false
+    "public": true
   },
   "UsuarioIdentity": {
     "dataSource": "db",

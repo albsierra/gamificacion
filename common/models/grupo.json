@@ -45,7 +45,10 @@
     "invitaciones": {
       "type": "hasMany",
       "model": "Invitacion",
-      "foreignKey": ""
+      "polymorphic": {
+        "foreignKey": "invitableId",
+        "discriminator": "invitableType"
+      }
     }
   },
   "acls": [
@@ -80,13 +83,6 @@
       "principalId": "miembroGrupo",
       "permission": "ALLOW",
       "property": "invite"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "aceptarInvitacion"
     },
     {
       "accessType": "EXECUTE",
@@ -167,43 +163,6 @@
         {
           "path": "/invite",
           "verb": "post"
-        }
-      ]
-    },
-    "prototype.aceptarInvitacion": {
-      "accepts": [
-        {
-          "arg": "token",
-          "type": "string",
-          "required": true,
-          "description": "El token enviado junto con la invitación",
-          "http": {
-            "source": "query"
-          }
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "El objeto con",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "miembro",
-          "type": "object",
-          "root": false,
-          "description": "El objeto miembro creado con la invitacion"
-        }
-      ],
-      "description": "Un usuario de la app acepta participar en un grupo al que ha sido previamente invitado.",
-      "http": [
-        {
-          "path": "/aceptarInvitacion",
-          "verb": "get"
         }
       ]
     }
